@@ -1,38 +1,44 @@
 #include "main.h"
-#include <stdlib.h>
-
 /**
- * print_c - prints char
- * @c: char to be printed
- *
- * Return: always 1
+ * _printf - printf function
+ * @format: const char pointer
+ * Return: b_len
+ * this is the start of the file
  */
-
-int print_c(va_list c)
+int _printf(const char *format, ...)
 {
-	char ch = (char)va_arg(c, int);
+	int (*pfunc)(va_list, flags_t *);
+	const char *p;
+	va_list arguments;
+	flags_t flags = {0, 0, 0};
 
-	_putchar(ch);
-	return (1);
-}
+	register int count = 0;
 
-/**
- * print_s - prints a string
- * @s: string to be printed
- *
- * Return: number of chars printed
- */
-
-int print_s(va_list s)
-{
-	int count;
-	char *str = va_arg(s, char *);
-
-	if (str == NULL)
-		str = "(null)";
-	for (count = 0; str[count]; count++)
+	va_start(arguments, format);
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	for (p = format; *p; p++)
 	{
-		_putchar(str[count]);
+		if (*p == '%')
+		{
+			p++;
+			if (*p == '%')
+			{
+				count += _putchar('%');
+				continue;
+			}
+			while (get_flag(*p, &flags))
+				p++;
+			pfunc = get_print(*p);
+			count += (pfunc)
+				? pfunc(arguments, &flags)
+				: _printf("%%%c", *p);
+		} else
+			count += _putchar(*p);
 	}
+	_putchar(-1);
+	va_end(arguments);
 	return (count);
 }
