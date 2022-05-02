@@ -1,27 +1,32 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef _MAIN_
+#define _MAIN_
 
-#include <stdlib.h>
+#include <unistd.h>
 #include <stdarg.h>
-
+#include <stdlib.h>
 
 /**
- * struct print - Checks what flags need to be turned on
- * @t: the type to be printed
- * @f: the function to print
+ * struct convert - defines a structure for symbols and functions
+ *
+ * @sym: The operator.
+ * @f: the function associated.
  */
-
-typedef struct print
+struct convert
 {
-	char *t;
+	char *sym;
 	int (*f)(va_list);
-} print_t;
+};
+typedef struct convert conver_t;
 
-int _putchar(char c);
+int parser(const char *format, conver_t f_list[], va_list arg_list);
 int _printf(const char *format, ...);
-int print_i(va_list i);
-int print_d(va_list d);
-int print_c(va_list c);
-int print_s(va_list s);
+
+int _putchar(char);
+int print_char(va_list);
+int print_string(va_list);
+int print_percent(va_list);
+int print_integer(va_list);
+int print_number(va_list);
+
 
 #endif
