@@ -1,27 +1,31 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef _MAIN_H_
+#define _MAIN_H_
 
 #include <stdlib.h>
 #include <stdarg.h>
-
+#include <limits.h>
 
 /**
- * struct print - Checks what flags need to be turned on
- * @t: the type to be printed
- * @f: the function to print
+ * struct fprinter - a struct holding the
+ * format specifier and a pointer to the handling
+ * function
+ * @spec: the format specifier
+ * @hf: a pointer to the handling function
  */
-
-typedef struct print
+typedef struct fprinter
 {
-	char *t;
-	int (*f)(va_list);
-} print_t;
+	char *spec;
+	int (*hf)(va_list);
+} fprinter;
 
-int _putchar(char c);
 int _printf(const char *format, ...);
-int print_i(va_list i);
-int print_d(va_list d);
-int print_c(va_list c);
-int print_s(va_list s);
+int _vprintf(const char *format, va_list args);
+int func_call(char, va_list);
+int _putchar(char c);
+
+int print_char(va_list);
+int print_string(va_list);
+int print_int(va_list);
+int _print_int(int, int *);
 
 #endif
